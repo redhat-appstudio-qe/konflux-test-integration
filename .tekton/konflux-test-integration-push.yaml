@@ -10,6 +10,8 @@ metadata:
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
       == "main"
   creationTimestamp: null
+  finalizers:
+  - test.appstudio.openshift.io/pipelinerun
   labels:
     appstudio.openshift.io/application: konflux-test-integration
     appstudio.openshift.io/component: konflux-test-integration
