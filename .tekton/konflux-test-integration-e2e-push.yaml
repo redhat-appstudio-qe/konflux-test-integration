@@ -9,6 +9,8 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
       == "main"
+  finalizers:
+  - test.appstudio.openshift.io/pipelinerun
   labels:
     appstudio.openshift.io/application: konflux-test-integ-e2e
     appstudio.openshift.io/component: konflux-test-integration-e2e
