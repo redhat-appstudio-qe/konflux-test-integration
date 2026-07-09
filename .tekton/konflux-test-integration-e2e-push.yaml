@@ -9,8 +9,6 @@ metadata:
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "push" && target_branch
       == "main"
-  finalizers:
-  - test.appstudio.openshift.io/pipelinerun
   labels:
     appstudio.openshift.io/application: konflux-test-integ-e2e
     appstudio.openshift.io/component: konflux-test-integration-e2e
@@ -122,6 +120,19 @@ spec:
       name: CHAINS-GIT_COMMIT
       value: $(tasks.clone-repository.results.commit)
     tasks:
+    - name: add-finalizer
+      taskSpec:
+        steps:
+        - name: patch
+          image: quay.io/konflux-ci/appstudio-utils:latest
+          script: |
+            #!/usr/bin/env bash
+            set -euo pipefail
+            kubectl patch pipelinerun $(context.pipelineRun.name) \
+              -n $(context.pipelineRun.namespace) \
+              --type=json \
+              -p '[{"op":"add","path":"/metadata/finalizers/-","value":"test.appstudio.openshift.io/pipelinerun"}]'
+            echo "Finalizer added to $(context.pipelineRun.name)"
     - name: init
       params:
       - name: enable-cache-proxy
