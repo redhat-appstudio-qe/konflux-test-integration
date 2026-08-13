@@ -131,7 +131,7 @@ spec:
             kubectl patch pipelinerun $(context.pipelineRun.name) \
               -n $(context.pipelineRun.namespace) \
               --type=json \
-              -p '[{"op":"add","path":"/metadata/finalizers/-","value":"test.appstudio.openshift.io/pipelinerun"}]'
+              -p '[{"op":"add","path":"/metadata/finalizers/-","value":"test.appstudio.openshift.io/sanitize-pipelinerun"}]'
             echo "Finalizer added to $(context.pipelineRun.name)"
     - name: init
       params:
